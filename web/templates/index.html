@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FileMint - Dosya Dönüştürücü</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
         :root {
-            /* Görseldeki renk paletine dayalı Koyu Tema */
-            --bg-body: #1a1a1a;      /* En soldaki koyu renk (Siyah ağırlıklı) */
-            --bg-card: #2d2d2d;      /* Kartlar için biraz daha açık ton */
-            --primary: #e0a458;      /* Sağdan ikinci hardal/turuncu renk (Vurgu) */
-            --primary-hover: #c58e45;
-            --secondary: #2f5e6d;    /* En sağdaki koyu teal/yeşil ton */
-            --text-main: #e6e2dd;    /* Soldan ikinci bej rengi (Metin) */
+            --bg-body: #1a1a1a;
+            --bg-card: #2d2d2d;
+            --primary: #11AEAE;
+            --primary-hover: #0d8a8a;
+            --secondary: #2f5e6d;
+            --text-main: #e6e2dd;
             --text-muted: #a0a0a0;
             --border-color: #404040;
         }
@@ -87,7 +87,7 @@
             font-size: 2.8rem;
             font-weight: 700;
             margin-bottom: 20px;
-            color: var(--text-main);
+            color: var(--primary);
             max-width: 800px;
             margin-left: auto;
             margin-right: auto;
@@ -171,16 +171,30 @@
         }
 
         .card-icon {
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 20px;
             color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.05);
+        }
+        
+        .card-icon .ph-arrow-right {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            opacity: 0.7;
         }
 
         .card h2 {
             font-size: 1.25rem;
             font-weight: 700;
             margin-bottom: 10px;
-            color: var(--text-main);
+            color: var(--primary);
         }
 
         .card p {
@@ -219,7 +233,7 @@
     <!-- Navbar -->
     <nav class="navbar">
         <a href="/" class="logo">
-            🍃 <span>FileMint</span>
+            <i class="ph ph-plant" style="color: var(--primary);"></i> <span>FileMint</span>
         </a>
     </nav>
 
@@ -249,13 +263,26 @@
             
             <a href="/donustur/{{ key }}" class="card" data-categories="{{ categories|join(' ') }}">
                 <div class="card-icon">
-                    {% if 'pdf' in key and 'word' in key %}📄
-                    {% elif 'word' in key %}📝
-                    {% elif 'txt' in key %}📃
-                    {% elif 'image' in key or 'jpg' in key or 'png' in key %}🖼️
-                    {% elif 'excel' in key %}📊
-                    {% elif 'powerpoint' in key %}📽️
-                    {% else %}📁
+                    {% if key == 'pdf-to-word' %}
+                        <i class="ph ph-file-pdf"></i><i class="ph ph-arrow-right"></i><i class="ph ph-microsoft-word-logo"></i>
+                    {% elif key == 'word-to-pdf' %}
+                        <i class="ph ph-microsoft-word-logo"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf"></i>
+                    {% elif key == 'pdf-to-txt' %}
+                        <i class="ph ph-file-pdf"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-text"></i>
+                    {% elif key == 'txt-to-pdf' %}
+                        <i class="ph ph-file-text"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf"></i>
+                    {% elif key == 'image-to-pdf' %}
+                        <i class="ph ph-image"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf"></i>
+                    {% elif key == 'jpg-to-png' %}
+                        <i class="ph ph-file-jpg"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-png"></i>
+                    {% elif key == 'png-to-jpg' %}
+                        <i class="ph ph-file-png"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-jpg"></i>
+                    {% elif key == 'excel-to-pdf' %}
+                        <i class="ph ph-microsoft-excel-logo"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf"></i>
+                    {% elif key == 'powerpoint-to-pdf' %}
+                        <i class="ph ph-microsoft-powerpoint-logo"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf"></i>
+                    {% else %}
+                        <i class="ph ph-files"></i>
                     {% endif %}
                 </div>
                 <h2>{{ donusum.isim }}</h2>

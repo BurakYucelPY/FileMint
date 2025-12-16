@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ bilgi.isim }} - FileMint</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
         :root {
-            /* Görseldeki renk paletine dayalı Koyu Tema */
-            --bg-body: #1a1a1a;      /* En soldaki koyu renk (Siyah ağırlıklı) */
-            --bg-card: #2d2d2d;      /* Kartlar için biraz daha açık ton */
-            --primary: #e0a458;      /* Sağdan ikinci hardal/turuncu renk (Vurgu) */
-            --primary-hover: #c58e45;
-            --secondary: #2f5e6d;    /* En sağdaki koyu teal/yeşil ton */
-            --text-main: #e6e2dd;    /* Soldan ikinci bej rengi (Metin) */
+            --bg-body: #1a1a1a;
+            --bg-card: #2d2d2d;
+            --primary: #11AEAE;
+            --primary-hover: #0d8a8a;
+            --secondary: #2f5e6d;
+            --text-main: #e6e2dd;
             --text-muted: #a0a0a0;
             --border-color: #404040;
         }
@@ -53,6 +53,10 @@
             font-weight: 500;
         }
 
+        .back-btn i {
+            font-size: 1.2rem;
+        }
+
         .back-btn:hover {
             background: var(--bg-card);
             color: var(--primary);
@@ -62,7 +66,7 @@
 
         h1 {
             text-align: center;
-            color: var(--text-main);
+            color: var(--primary);
             font-size: 2.5rem;
             margin-bottom: 10px;
             font-weight: 700;
@@ -200,7 +204,7 @@
 </head>
 <body>
     <div class="container">
-        <a href="/" class="back-btn">← Ana Sayfa</a>
+        <a href="/" class="back-btn"><i class="ph ph-arrow-left"></i> Ana Sayfa</a>
         
         <h1>{{ bilgi.isim }}</h1>
         <p class="subtitle">{{ bilgi.aciklama }}</p>
@@ -208,7 +212,7 @@
         <div class="upload-box">
             <!-- Sürükle Bırak Alanı -->
             <div class="drop-zone" id="dropZone">
-                <div class="drop-zone-icon">📂</div>
+                <div class="drop-zone-icon"><i class="ph ph-cloud-arrow-up"></i></div>
                 <h3>Dosyanızı buraya sürükleyin</h3>
                 <p>veya tıklayarak seçin</p>
                 <input type="file" class="file-input" id="fileInput" 
@@ -223,7 +227,7 @@
 
             <!-- Başarılı -->
             <div class="success" id="success">
-                <div class="success-icon">✅</div>
+                <div class="success-icon"><i class="ph ph-check-circle"></i></div>
                 <h3>Dönüşüm Başarılı!</h3>
                 <p>Dosyanız indirildi.</p>
                 <button class="retry-btn" onclick="location.reload()">Yeni Dosya Dönüştür</button>
@@ -231,7 +235,7 @@
 
             <!-- Hata -->
             <div class="error" id="error">
-                <div class="error-icon">❌</div>
+                <div class="error-icon"><i class="ph ph-warning-circle"></i></div>
                 <h3>Hata Oluştu</h3>
                 <p id="errorMsg"></p>
                 <button class="retry-btn" onclick="location.reload()">Tekrar Dene</button>
