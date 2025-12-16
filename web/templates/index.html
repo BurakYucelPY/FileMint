@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FileMint - Dosya Dönüştürücü</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2rem;
+            margin-bottom: 50px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .card p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .card-arrow {
+            margin-top: 20px;
+            color: #667eea;
+            font-size: 1.5rem;
+        }
+
+        footer {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            margin-top: 60px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍃 FileMint</h1>
+        <p class="subtitle">Dosyalarınızı kolayca dönüştürün</p>
+
+        <div class="cards">
+            {% for key, donusum in donusumler.items() %}
+            <a href="/donustur/{{ key }}" class="card">
+                <div class="card-icon">
+                    {% if 'pdf' in key and 'word' in key %}📄
+                    {% elif 'word' in key %}📝
+                    {% elif 'txt' in key %}📃
+                    {% elif 'image' in key or 'jpg' in key or 'png' in key %}🖼️
+                    {% elif 'excel' in key %}📊
+                    {% elif 'powerpoint' in key %}📽️
+                    {% else %}📁
+                    {% endif %}
+                </div>
+                <h2>{{ donusum.isim }}</h2>
+                <p>{{ donusum.aciklama }}</p>
+                <div class="card-arrow">→</div>
+            </a>
+            {% endfor %}
+        </div>
+
+        <footer>
+            <p>FileMint © 2025 - Tüm hakları saklıdır</p>
+        </footer>
+    </div>
+</body>
+</html>
