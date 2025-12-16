@@ -4,7 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FileMint - Dosya Dönüştürücü</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #e53935; /* iLovePDF kırmızısına benzer bir ton */
+            --primary-hover: #d32f2f;
+            --bg-light: #f8f9fa;
+            --text-dark: #333;
+            --text-gray: #666;
+            --border-color: #e0e0e0;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,92 +22,222 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 40px 20px;
+            font-family: 'Inter', sans-serif;
+            background-color: #fff;
+            color: var(--text-dark);
+            line-height: 1.6;
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        h1 {
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
             text-align: center;
-            color: white;
-            font-size: 3rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            padding: 80px 20px 40px;
+            background-color: #fcfcfc;
         }
 
-        .subtitle {
-            text-align: center;
-            color: rgba(255,255,255,0.9);
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero p {
             font-size: 1.2rem;
+            color: var(--text-gray);
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
             margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 25px;
+            border: 1px solid var(--border-color);
+            background: white;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-gray);
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background-color: #f5f5f5;
+            border-color: #ccc;
+        }
+
+        .filter-btn.active {
+            background-color: var(--text-dark);
+            color: white;
+            border-color: var(--text-dark);
+        }
+
+        /* Grid */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
         }
 
         .cards {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
+            gap: 20px;
         }
 
         .card {
             background: white;
-            border-radius: 16px;
-            padding: 30px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
             text-decoration: none;
-            color: #333;
+            color: var(--text-dark);
             transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            height: 100%;
         }
 
         .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            border-color: transparent;
         }
 
         .card-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--primary);
         }
 
         .card h2 {
-            font-size: 1.4rem;
+            font-size: 1.25rem;
+            font-weight: 600;
             margin-bottom: 10px;
-            color: #333;
         }
 
         .card p {
-            color: #666;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            color: var(--text-gray);
             line-height: 1.5;
         }
 
-        .card-arrow {
-            margin-top: 20px;
-            color: #667eea;
-            font-size: 1.5rem;
+        /* Footer */
+        footer {
+            background-color: #f8f9fa;
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
         }
 
-        footer {
-            text-align: center;
-            color: rgba(255,255,255,0.8);
-            margin-top: 60px;
+        footer p {
+            color: var(--text-gray);
             font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .navbar {
+                padding: 15px 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🍃 FileMint</h1>
-        <p class="subtitle">Dosyalarınızı kolayca dönüştürün</p>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="logo">
+            🍃 <span>FileMint</span>
+        </a>
+    </nav>
 
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Dosyalarınızla çalışmak için ihtiyaç duyduğunuz bütün araçlar tek bir yerde</h1>
+        <p>Dosyalarınızı kullanmak için ihtiyacın olan bütün araçlar parmaklarının ucunda. Hepsinin kullanımı çok kolay ve %100 ÜCRETSİZ!</p>
+        
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterTools('all')">Hepsi</button>
+            <button class="filter-btn" onclick="filterTools('pdf')">PDF Araçları</button>
+            <button class="filter-btn" onclick="filterTools('word')">Word Araçları</button>
+            <button class="filter-btn" onclick="filterTools('image')">Resim Araçları</button>
+            <button class="filter-btn" onclick="filterTools('office')">Ofis Araçları</button>
+        </div>
+    </section>
+
+    <!-- Tools Grid -->
+    <div class="container">
         <div class="cards">
             {% for key, donusum in donusumler.items() %}
-            <a href="/donustur/{{ key }}" class="card">
+            {% set categories = [] %}
+            {% if 'pdf' in key %} {% set _ = categories.append('pdf') %} {% endif %}
+            {% if 'word' in key %} {% set _ = categories.append('word') %} {% set _ = categories.append('office') %} {% endif %}
+            {% if 'excel' in key or 'powerpoint' in key %} {% set _ = categories.append('office') %} {% endif %}
+            {% if 'image' in key or 'jpg' in key or 'png' in key %} {% set _ = categories.append('image') %} {% endif %}
+            
+            <a href="/donustur/{{ key }}" class="card" data-categories="{{ categories|join(' ') }}">
                 <div class="card-icon">
                     {% if 'pdf' in key and 'word' in key %}📄
                     {% elif 'word' in key %}📝
@@ -110,14 +250,53 @@
                 </div>
                 <h2>{{ donusum.isim }}</h2>
                 <p>{{ donusum.aciklama }}</p>
-                <div class="card-arrow">→</div>
             </a>
             {% endfor %}
         </div>
-
-        <footer>
-            <p>FileMint © 2025 - Tüm hakları saklıdır</p>
-        </footer>
     </div>
+
+    <footer>
+        <p>© 2025 FileMint - Tüm hakları saklıdır.</p>
+    </footer>
+
+    <script>
+        function filterTools(category) {
+            // Butonları güncelle
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase().includes(category === 'all' ? 'hepsi' : category)) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Kartları filtrele
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                if (category === 'all') {
+                    card.style.display = 'flex';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 50);
+                } else {
+                    const categories = card.getAttribute('data-categories').split(' ');
+                    if (categories.includes(category)) {
+                        card.style.display = 'flex';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, 50);
+                    } else {
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(10px)';
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                        }, 300);
+                    }
+                }
+            });
+        }
+    </script>
 </body>
 </html>
