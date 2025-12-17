@@ -248,6 +248,7 @@
             <button class="filter-btn" onclick="filterTools('word')">Word Araçları</button>
             <button class="filter-btn" onclick="filterTools('image')">Resim Araçları</button>
             <button class="filter-btn" onclick="filterTools('office')">Ofis Araçları</button>
+            <button class="filter-btn" onclick="filterTools('web')">Web Araçları</button>
         </div>
     </section>
 
@@ -258,8 +259,9 @@
             {% set categories = [] %}
             {% if 'pdf' in key %} {% set _ = categories.append('pdf') %} {% endif %}
             {% if 'word' in key %} {% set _ = categories.append('word') %} {% set _ = categories.append('office') %} {% endif %}
-            {% if 'excel' in key or 'powerpoint' in key %} {% set _ = categories.append('office') %} {% endif %}
+            {% if 'excel' in key or 'powerpoint' in key or 'csv' in key %} {% set _ = categories.append('office') %} {% endif %}
             {% if 'image' in key or 'jpg' in key or 'png' in key %} {% set _ = categories.append('image') %} {% endif %}
+            {% if 'markdown' in key or 'html' in key %} {% set _ = categories.append('web') %} {% endif %}
             
             <a href="/donustur/{{ key }}" class="card" data-categories="{{ categories|join(' ') }}">
                 <div class="card-icon">
@@ -281,6 +283,22 @@
                         <i class="ph ph-microsoft-excel-logo"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf"></i>
                     {% elif key == 'powerpoint-to-pdf' %}
                         <i class="ph ph-microsoft-powerpoint-logo"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf"></i>
+                    {% elif key == 'pdf-merge' %}
+                        <i class="ph ph-file-pdf"></i><i class="ph ph-plus"></i><i class="ph ph-file-pdf"></i>
+                    {% elif key == 'pdf-split' %}
+                        <i class="ph ph-file-pdf"></i><i class="ph ph-arrow-right"></i><i class="ph ph-scissors"></i>
+                    {% elif key == 'pdf-compress' %}
+                        <i class="ph ph-file-pdf"></i><i class="ph ph-arrow-right"></i><i class="ph ph-arrow-circle-down"></i>
+                    {% elif key == 'markdown-to-html' %}
+                        <i class="ph ph-markdown-logo"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-html"></i>
+                    {% elif key == 'markdown-to-pdf' %}
+                        <i class="ph ph-markdown-logo"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf"></i>
+                    {% elif key == 'html-to-pdf' %}
+                        <i class="ph ph-file-html"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf"></i>
+                    {% elif key == 'csv-to-excel' %}
+                        <i class="ph ph-file-csv"></i><i class="ph ph-arrow-right"></i><i class="ph ph-microsoft-excel-logo"></i>
+                    {% elif key == 'excel-to-csv' %}
+                        <i class="ph ph-microsoft-excel-logo"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-csv"></i>
                     {% else %}
                         <i class="ph ph-files"></i>
                     {% endif %}
