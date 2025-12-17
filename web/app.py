@@ -15,7 +15,13 @@ from donusum import (
     image_to_pdf,
     image_converter,
     excel_to_pdf,
-    powerpoint_to_pdf
+    powerpoint_to_pdf,
+    pdf_merge,
+    pdf_split,
+    pdf_compress,
+    markdown_converter,
+    html_to_pdf,
+    csv_excel_converter
 )
 
 app = Flask(__name__)
@@ -88,6 +94,63 @@ DONUSUM_TURLERI = {
         'uzanti': ['.pptx', '.ppt'],
         'cikti': '.pdf',
         'fonksiyon': powerpoint_to_pdf.cevir
+    },
+    'pdf-merge': {
+        'isim': 'PDF Birleştir',
+        'aciklama': 'Birden fazla PDF dosyasını tek dosyada birleştir',
+        'uzanti': ['.pdf'],
+        'cikti': '.pdf',
+        'fonksiyon': pdf_merge.cevir,
+        'coklu': True  # Çoklu dosya kabul eder
+    },
+    'pdf-split': {
+        'isim': 'PDF Böl',
+        'aciklama': 'PDF dosyasını sayfa sayfa ayır (ZIP olarak indir)',
+        'uzanti': ['.pdf'],
+        'cikti': '.zip',
+        'fonksiyon': pdf_split.cevir
+    },
+    'pdf-compress': {
+        'isim': 'PDF Sıkıştır',
+        'aciklama': 'PDF dosya boyutunu küçült',
+        'uzanti': ['.pdf'],
+        'cikti': '.pdf',
+        'fonksiyon': pdf_compress.cevir
+    },
+    'markdown-to-html': {
+        'isim': 'Markdown → HTML',
+        'aciklama': 'Markdown dosyasını HTML\'e dönüştür',
+        'uzanti': ['.md'],
+        'cikti': '.html',
+        'fonksiyon': markdown_converter.md_to_html
+    },
+    'markdown-to-pdf': {
+        'isim': 'Markdown → PDF',
+        'aciklama': 'Markdown dosyasını PDF\'e dönüştür',
+        'uzanti': ['.md'],
+        'cikti': '.pdf',
+        'fonksiyon': markdown_converter.md_to_pdf
+    },
+    'html-to-pdf': {
+        'isim': 'HTML → PDF',
+        'aciklama': 'HTML dosyasını PDF\'e dönüştür',
+        'uzanti': ['.html', '.htm'],
+        'cikti': '.pdf',
+        'fonksiyon': html_to_pdf.cevir
+    },
+    'csv-to-excel': {
+        'isim': 'CSV → Excel',
+        'aciklama': 'CSV dosyasını Excel formatına dönüştür',
+        'uzanti': ['.csv'],
+        'cikti': '.xlsx',
+        'fonksiyon': csv_excel_converter.csv_to_excel
+    },
+    'excel-to-csv': {
+        'isim': 'Excel → CSV',
+        'aciklama': 'Excel dosyasını CSV formatına dönüştür',
+        'uzanti': ['.xlsx', '.xls'],
+        'cikti': '.csv',
+        'fonksiyon': csv_excel_converter.excel_to_csv
     }
 }
 
@@ -111,14 +174,66 @@ def dosya_yukle(tur):
     if tur not in DONUSUM_TURLERI:
         return jsonify({'hata': 'Geçersiz dönüşüm türü'}), 400
     
+    bilgi = DONUSUM_TURLERI[tur]
+    coklu_dosya = bilgi.get('coklu', False)
+    
+    # Çoklu dosya desteği (PDF birleştirme için)
+    if coklu_dosya:
+        if 'dosya' not in request.files:
+            return jsonify({'hata': 'Dosya bulunamadı'}), 400
+        
+        dosyalar = request.files.getlist('dosya')
+        if len(dosyalar) < 2:
+            return jsonify({'hata': 'En az 2 dosya gerekli'}), 400
+        
+        try:
+            gecici_klasor = tempfile.mkdtemp()
+            dosya_yollari = []
+            
+            for dosya in dosyalar:
+                if dosya.filename == '':
+                    continue
+                    
+                dosya_uzanti = os.path.splitext(dosya.filename)[1].lower()
+                if dosya_uzanti not in bilgi['uzanti']:
+                    return jsonify({'hata': f'Geçersiz dosya türü: {dosya.filename}'}), 400
+                
+                girdi_yolu = os.path.join(gecici_klasor, dosya.filename)
+                dosya.save(girdi_yolu)
+                dosya_yollari.append(girdi_yolu)
+            
+            eski_cwd = os.getcwd()
+            os.chdir(gecici_klasor)
+            
+            sonuc = bilgi['fonksiyon'](dosya_yollari)
+            
+            os.chdir(eski_cwd)
+            
+            if sonuc:
+                beklenen_uzanti = bilgi['cikti']
+                for f in os.listdir(gecici_klasor):
+                    if f.lower().endswith(beklenen_uzanti) and f not in [os.path.basename(d) for d in dosya_yollari]:
+                        cikti_yolu = os.path.join(gecici_klasor, f)
+                        return send_file(
+                            cikti_yolu,
+                            as_attachment=True,
+                            download_name=f,
+                            mimetype='application/octet-stream'
+                        )
+                return jsonify({'hata': 'Çıktı dosyası oluşturulamadı'}), 500
+            else:
+                return jsonify({'hata': 'Dönüşüm başarısız oldu'}), 500
+                
+        except Exception as e:
+            return jsonify({'hata': str(e)}), 500
+    
+    # Tekli dosya işleme (mevcut kod)
     if 'dosya' not in request.files:
         return jsonify({'hata': 'Dosya bulunamadı'}), 400
     
     dosya = request.files['dosya']
     if dosya.filename == '':
         return jsonify({'hata': 'Dosya seçilmedi'}), 400
-    
-    bilgi = DONUSUM_TURLERI[tur]
     
     # Uzantı kontrolü
     dosya_uzanti = os.path.splitext(dosya.filename)[1].lower()
