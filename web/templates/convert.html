@@ -203,7 +203,7 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" data-coklu="{% if bilgi.coklu %}true{% else %}false{% endif %}" data-tur="{{ tur }}" data-cikti="{{ bilgi.cikti }}">
         <a href="/" class="back-btn"><i class="ph ph-arrow-left"></i> Ana Sayfa</a>
         
         <h1>{{ bilgi.isim }}</h1>
@@ -213,11 +213,29 @@
             <!-- Sürükle Bırak Alanı -->
             <div class="drop-zone" id="dropZone">
                 <div class="drop-zone-icon"><i class="ph ph-cloud-arrow-up"></i></div>
+                {% if bilgi.coklu %}
+                <h3>Dosyalarınızı buraya sürükleyin</h3>
+                <p>veya tıklayarak seçin (en az 2 dosya)</p>
+                <input type="file" class="file-input" id="fileInput" 
+                       accept="{{ bilgi.uzanti | join(',') }}" multiple>
+                {% else %}
                 <h3>Dosyanızı buraya sürükleyin</h3>
                 <p>veya tıklayarak seçin</p>
                 <input type="file" class="file-input" id="fileInput" 
                        accept="{{ bilgi.uzanti | join(',') }}">
+                {% endif %}
             </div>
+
+            <!-- Seçilen Dosyalar Listesi (Çoklu dosya için) -->
+            {% if bilgi.coklu %}
+            <div class="selected-files" id="selectedFiles" style="display: none; margin-top: 20px; text-align: left;">
+                <h4 style="margin-bottom: 10px; color: var(--primary);">Seçilen Dosyalar:</h4>
+                <ul id="fileList" style="list-style: none; padding: 0;"></ul>
+                <button class="retry-btn" id="convertBtn" style="margin-top: 15px; width: 100%;">
+                    <i class="ph ph-files"></i> Dosyaları Birleştir
+                </button>
+            </div>
+            {% endif %}
 
             <!-- Yükleme Göstergesi -->
             <div class="loading" id="loading">
@@ -248,12 +266,18 @@
     </div>
 
     <script>
+        const container = document.querySelector('.container');
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');
         const loading = document.getElementById('loading');
         const success = document.getElementById('success');
         const error = document.getElementById('error');
         const errorMsg = document.getElementById('errorMsg');
+        const isCoklu = container.dataset.coklu === 'true';
+        const tur = container.dataset.tur;
+        const ciktiUzanti = container.dataset.cikti;
+        
+        let selectedFiles = [];
 
         // Tıklama ile dosya seçme
         dropZone.addEventListener('click', () => fileInput.click());
@@ -274,16 +298,101 @@
             
             const files = e.dataTransfer.files;
             if (files.length > 0) {
-                handleFile(files[0]);
+                if (isCoklu) {
+                    handleMultipleFiles(files);
+                } else {
+                    handleFile(files[0]);
+                }
             }
         });
 
         // Dosya seçildiğinde
         fileInput.addEventListener('change', () => {
             if (fileInput.files.length > 0) {
-                handleFile(fileInput.files[0]);
+                if (isCoklu) {
+                    handleMultipleFiles(fileInput.files);
+                } else {
+                    handleFile(fileInput.files[0]);
+                }
             }
         });
+
+        // Çoklu dosya işleme (PDF Birleştirme için)
+        function handleMultipleFiles(files) {
+            selectedFiles = Array.from(files);
+            
+            const selectedFilesDiv = document.getElementById('selectedFiles');
+            const fileList = document.getElementById('fileList');
+            
+            fileList.innerHTML = '';
+            selectedFiles.forEach((file, index) => {
+                const li = document.createElement('li');
+                li.style.cssText = 'padding: 8px 12px; background: var(--bg-body); margin-bottom: 5px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;';
+                li.innerHTML = `
+                    <span><i class="ph ph-file-pdf" style="color: var(--primary); margin-right: 8px;"></i>${file.name}</span>
+                    <span style="color: var(--text-muted); font-size: 0.85rem;">${(file.size / 1024).toFixed(1)} KB</span>
+                `;
+                fileList.appendChild(li);
+            });
+            
+            selectedFilesDiv.style.display = 'block';
+            
+            if (selectedFiles.length < 2) {
+                document.getElementById('convertBtn').disabled = true;
+                document.getElementById('convertBtn').style.opacity = '0.5';
+            } else {
+                document.getElementById('convertBtn').disabled = false;
+                document.getElementById('convertBtn').style.opacity = '1';
+            }
+        }
+
+        // Çoklu dosya dönüştürme butonu
+        if (isCoklu) {
+            document.getElementById('convertBtn').addEventListener('click', async () => {
+                if (selectedFiles.length < 2) {
+                    alert('En az 2 dosya seçmelisiniz!');
+                    return;
+                }
+                
+                dropZone.style.display = 'none';
+                document.getElementById('selectedFiles').style.display = 'none';
+                loading.style.display = 'flex';
+
+                const formData = new FormData();
+                selectedFiles.forEach(file => {
+                    formData.append('dosya', file);
+                });
+
+                try {
+                    const response = await fetch('/yukle/' + tur, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (response.ok) {
+                        const blob = await response.blob();
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'birlestirilmis.pdf';
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(url);
+
+                        loading.style.display = 'none';
+                        success.style.display = 'flex';
+                    } else {
+                        const data = await response.json();
+                        throw new Error(data.hata || 'Bilinmeyen hata');
+                    }
+                } catch (err) {
+                    loading.style.display = 'none';
+                    error.style.display = 'flex';
+                    errorMsg.textContent = err.message;
+                }
+            });
+        }
 
         async function handleFile(file) {
             // UI güncelle
@@ -293,14 +402,12 @@
             const formData = new FormData();
             formData.append('dosya', file);
 
-            // Çıktı dosya adını hazırla (uzantıyı değiştir)
             const originalName = file.name;
             const baseName = originalName.substring(0, originalName.lastIndexOf('.')) || originalName;
-            const outputExt = '{{ bilgi.cikti }}';
-            const outputFilename = baseName + outputExt;
+            const outputFilename = baseName + ciktiUzanti;
 
             try {
-                const response = await fetch('/yukle/{{ tur }}', {
+                const response = await fetch('/yukle/' + tur, {
                     method: 'POST',
                     body: formData
                 });
