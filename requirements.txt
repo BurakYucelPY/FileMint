@@ -6,6 +6,7 @@ Flask>=2.3.0
 # PDF İşlemleri
 PyPDF2>=3.0.0
 PyMuPDF>=1.23.0
+pdf2docx>=0.5.6
 
 # Word/Docx İşlemleri
 python-docx>=0.8.11
@@ -20,9 +21,8 @@ xlrd>=2.0.0
 
 # Markdown İşlemleri
 markdown>=3.5.0
+Pygments>=2.16.0
 
 # HTML → PDF Dönüşümü
 weasyprint>=60.0
 
-# Not: LibreOffice harici bağımlılık olarak gereklidir (Word, Excel, PowerPoint → PDF dönüşümleri için)
-# Windows: https://www.libreoffice.org/download/download/
