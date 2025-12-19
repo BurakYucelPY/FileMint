@@ -36,13 +36,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 40px;
+            padding: 0 40px;
             background: var(--bg-card);
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             position: sticky;
             top: 0;
             z-index: 100;
             border-bottom: 1px solid var(--border-color);
+            height: 70px;
         }
 
         .logo {
@@ -59,21 +60,122 @@
             color: var(--primary);
         }
 
-        .nav-links {
+        .nav-menu {
             display: flex;
-            gap: 20px;
+            align-items: center;
+            height: 100%;
+            gap: 0;
+        }
+
+        .nav-item {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
         }
 
         .nav-link {
             text-decoration: none;
-            color: var(--text-dark);
-            font-weight: 500;
-            font-size: 1rem;
-            transition: color 0.3s;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 0 18px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .nav-link:hover {
             color: var(--primary);
+        }
+
+        .nav-link.has-dropdown::after {
+            content: '';
+            border: solid var(--text-muted);
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 3px;
+            transform: rotate(45deg);
+            margin-left: 5px;
+            transition: transform 0.3s;
+        }
+
+        .nav-item:hover .nav-link.has-dropdown::after {
+            transform: rotate(-135deg);
+            border-color: var(--primary);
+        }
+
+        .nav-item:hover .nav-link.has-dropdown {
+            color: var(--primary);
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: auto;
+            right: 0;
+            background: var(--bg-card);
+            min-width: 480px;
+            border: 1px solid var(--border-color);
+            border-top: 3px solid var(--primary);
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            padding: 20px;
+            gap: 30px;
+        }
+
+        .nav-item:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .dropdown-column {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .dropdown-header {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 10px;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(17, 174, 174, 0.1);
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .dropdown-item i {
+            font-size: 1.4rem;
+            width: 28px;
+            text-align: center;
         }
 
         /* Hero Section */
@@ -232,6 +334,17 @@
         }
 
         /* Responsive */
+        @media (max-width: 1024px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .navbar {
+                padding: 15px 20px;
+                height: auto;
+            }
+        }
+
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2rem;
@@ -241,6 +354,15 @@
                 padding: 15px 20px;
             }
         }
+
+        /* Overflow fix */
+        html, body {
+            overflow-x: hidden;
+        }
+
+        .dropdown {
+            max-width: calc(100vw - 40px);
+        }
     </style>
 </head>
 <body>
@@ -249,6 +371,84 @@
         <a href="/" class="logo">
             <i class="ph ph-plant" style="color: var(--primary);"></i> <span>FileMint</span>
         </a>
+        
+        <div class="nav-menu">
+            <div class="nav-item">
+                <a href="/donustur/pdf-merge" class="nav-link">PDF Birleştir</a>
+            </div>
+            <div class="nav-item">
+                <a href="/donustur/pdf-split" class="nav-link">PDF Ayır</a>
+            </div>
+            <div class="nav-item">
+                <a href="/donustur/pdf-compress" class="nav-link">PDF Küçült</a>
+            </div>
+            
+            <div class="nav-item">
+                <a href="#" class="nav-link has-dropdown">PDF'e Dönüştür</a>
+                <div class="dropdown">
+                    <div class="dropdown-column">
+                        <div class="dropdown-header">PDF'e Dönüştür</div>
+                        <a href="/donustur/image-to-pdf" class="dropdown-item">
+                            <i class="ph ph-image icon-image"></i> JPG PDF Çevirme
+                        </a>
+                        <a href="/donustur/word-to-pdf" class="dropdown-item">
+                            <i class="ph ph-microsoft-word-logo icon-word"></i> Word PDF Çevirme
+                        </a>
+                        <a href="/donustur/powerpoint-to-pdf" class="dropdown-item">
+                            <i class="ph ph-microsoft-powerpoint-logo icon-powerpoint"></i> PowerPoint PDF Çevirme
+                        </a>
+                        <a href="/donustur/excel-to-pdf" class="dropdown-item">
+                            <i class="ph ph-microsoft-excel-logo icon-excel"></i> Excel PDF Çevirme
+                        </a>
+                        <a href="/donustur/html-to-pdf" class="dropdown-item">
+                            <i class="ph ph-file-html icon-html"></i> HTML PDF Çevirme
+                        </a>
+                        <a href="/donustur/txt-to-pdf" class="dropdown-item">
+                            <i class="ph ph-file-text icon-txt"></i> TXT PDF Çevirme
+                        </a>
+                        <a href="/donustur/markdown-to-pdf" class="dropdown-item">
+                            <i class="ph ph-markdown-logo icon-markdown"></i> Markdown PDF Çevirme
+                        </a>
+                    </div>
+                    <div class="dropdown-column">
+                        <div class="dropdown-header">PDF'den Dönüştür</div>
+                        <a href="/donustur/pdf-to-word" class="dropdown-item">
+                            <i class="ph ph-microsoft-word-logo icon-word"></i> PDF Word Çevirme
+                        </a>
+                        <a href="/donustur/pdf-to-txt" class="dropdown-item">
+                            <i class="ph ph-file-text icon-txt"></i> PDF TXT Çevirme
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="nav-item">
+                <a href="#" class="nav-link has-dropdown">Tüm Araçlar</a>
+                <div class="dropdown">
+                    <div class="dropdown-column">
+                        <div class="dropdown-header">Görüntü Araçları</div>
+                        <a href="/donustur/jpg-to-png" class="dropdown-item">
+                            <i class="ph ph-file-jpg icon-image"></i> JPG'den PNG'ye
+                        </a>
+                        <a href="/donustur/png-to-jpg" class="dropdown-item">
+                            <i class="ph ph-file-png icon-image"></i> PNG'den JPG'ye
+                        </a>
+                    </div>
+                    <div class="dropdown-column">
+                        <div class="dropdown-header">Ofis & Web</div>
+                        <a href="/donustur/csv-to-excel" class="dropdown-item">
+                            <i class="ph ph-file-csv icon-csv"></i> CSV'den Excel'e
+                        </a>
+                        <a href="/donustur/excel-to-csv" class="dropdown-item">
+                            <i class="ph ph-microsoft-excel-logo icon-excel"></i> Excel'den CSV'ye
+                        </a>
+                        <a href="/donustur/markdown-to-html" class="dropdown-item">
+                            <i class="ph ph-markdown-logo icon-markdown"></i> Markdown'dan HTML'e
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </nav>
 
     <!-- Hero Section -->
