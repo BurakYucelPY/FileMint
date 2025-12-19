@@ -190,6 +190,20 @@
             opacity: 0.7;
         }
 
+        /* Dosya türü renkleri */
+        .icon-pdf { color: #e74c3c !important; }
+        .icon-word { color: #2b579a !important; }
+        .icon-excel { color: #217346 !important; }
+        .icon-powerpoint { color: #d24726 !important; }
+        .icon-image { color: #9b59b6 !important; }
+        .icon-txt { color: #7f8c8d !important; }
+        .icon-html { color: #e44d26 !important; }
+        .icon-markdown { color: #083fa1 !important; }
+        .icon-csv { color: #27ae60 !important; }
+        .icon-scissors { color: #f39c12 !important; }
+        .icon-compress { color: #3498db !important; }
+        .icon-plus { color: #e74c3c !important; }
+
         .card h2 {
             font-size: 1.25rem;
             font-weight: 700;
@@ -266,39 +280,39 @@
             <a href="/donustur/{{ key }}" class="card" data-categories="{{ categories|join(' ') }}">
                 <div class="card-icon">
                     {% if key == 'pdf-to-word' %}
-                        <i class="ph ph-file-pdf"></i><i class="ph ph-arrow-right"></i><i class="ph ph-microsoft-word-logo"></i>
+                        <i class="ph ph-file-pdf icon-pdf"></i><i class="ph ph-arrow-right"></i><i class="ph ph-microsoft-word-logo icon-word"></i>
                     {% elif key == 'word-to-pdf' %}
-                        <i class="ph ph-microsoft-word-logo"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf"></i>
+                        <i class="ph ph-microsoft-word-logo icon-word"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf icon-pdf"></i>
                     {% elif key == 'pdf-to-txt' %}
-                        <i class="ph ph-file-pdf"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-text"></i>
+                        <i class="ph ph-file-pdf icon-pdf"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-text icon-txt"></i>
                     {% elif key == 'txt-to-pdf' %}
-                        <i class="ph ph-file-text"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf"></i>
+                        <i class="ph ph-file-text icon-txt"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf icon-pdf"></i>
                     {% elif key == 'image-to-pdf' %}
-                        <i class="ph ph-image"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf"></i>
+                        <i class="ph ph-image icon-image"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf icon-pdf"></i>
                     {% elif key == 'jpg-to-png' %}
-                        <i class="ph ph-file-jpg"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-png"></i>
+                        <i class="ph ph-file-jpg icon-image"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-png icon-image"></i>
                     {% elif key == 'png-to-jpg' %}
-                        <i class="ph ph-file-png"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-jpg"></i>
+                        <i class="ph ph-file-png icon-image"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-jpg icon-image"></i>
                     {% elif key == 'excel-to-pdf' %}
-                        <i class="ph ph-microsoft-excel-logo"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf"></i>
+                        <i class="ph ph-microsoft-excel-logo icon-excel"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf icon-pdf"></i>
                     {% elif key == 'powerpoint-to-pdf' %}
-                        <i class="ph ph-microsoft-powerpoint-logo"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf"></i>
+                        <i class="ph ph-microsoft-powerpoint-logo icon-powerpoint"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf icon-pdf"></i>
                     {% elif key == 'pdf-merge' %}
-                        <i class="ph ph-file-pdf"></i><i class="ph ph-plus"></i><i class="ph ph-file-pdf"></i>
+                        <i class="ph ph-file-pdf icon-pdf"></i><i class="ph ph-plus icon-plus"></i><i class="ph ph-file-pdf icon-pdf"></i>
                     {% elif key == 'pdf-split' %}
-                        <i class="ph ph-file-pdf"></i><i class="ph ph-arrow-right"></i><i class="ph ph-scissors"></i>
+                        <i class="ph ph-file-pdf icon-pdf"></i><i class="ph ph-arrow-right"></i><i class="ph ph-scissors icon-scissors"></i>
                     {% elif key == 'pdf-compress' %}
-                        <i class="ph ph-file-pdf"></i><i class="ph ph-arrow-right"></i><i class="ph ph-arrow-circle-down"></i>
+                        <i class="ph ph-file-pdf icon-pdf"></i><i class="ph ph-arrow-right"></i><i class="ph ph-arrow-circle-down icon-compress"></i>
                     {% elif key == 'markdown-to-html' %}
-                        <i class="ph ph-markdown-logo"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-html"></i>
+                        <i class="ph ph-markdown-logo icon-markdown"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-html icon-html"></i>
                     {% elif key == 'markdown-to-pdf' %}
-                        <i class="ph ph-markdown-logo"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf"></i>
+                        <i class="ph ph-markdown-logo icon-markdown"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf icon-pdf"></i>
                     {% elif key == 'html-to-pdf' %}
-                        <i class="ph ph-file-html"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf"></i>
+                        <i class="ph ph-file-html icon-html"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-pdf icon-pdf"></i>
                     {% elif key == 'csv-to-excel' %}
-                        <i class="ph ph-file-csv"></i><i class="ph ph-arrow-right"></i><i class="ph ph-microsoft-excel-logo"></i>
+                        <i class="ph ph-file-csv icon-csv"></i><i class="ph ph-arrow-right"></i><i class="ph ph-microsoft-excel-logo icon-excel"></i>
                     {% elif key == 'excel-to-csv' %}
-                        <i class="ph ph-microsoft-excel-logo"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-csv"></i>
+                        <i class="ph ph-microsoft-excel-logo icon-excel"></i><i class="ph ph-arrow-right"></i><i class="ph ph-file-csv icon-csv"></i>
                     {% else %}
                         <i class="ph ph-files"></i>
                     {% endif %}
