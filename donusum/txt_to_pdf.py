@@ -1,10 +1,30 @@
 import subprocess
 import os
+import shutil
 
-libreoffice_path = r"C:\Program Files\LibreOffice\program\soffice.exe"
+def get_libreoffice_path():
+    """LibreOffice yolunu dinamik olarak tespit eder."""
+    soffice = shutil.which("soffice")
+    if soffice:
+        return soffice
+    
+    windows_paths = [
+        r"C:\Program Files\LibreOffice\program\soffice.exe",
+        r"C:\Program Files (x86)\LibreOffice\program\soffice.exe",
+    ]
+    for path in windows_paths:
+        if os.path.exists(path):
+            return path
+    
+    return None
 
 def cevir(dosya_yolu):
     print(f"📝 [Modül: Metin -> PDF] {dosya_yolu} işleniyor...")
+    
+    libreoffice_path = get_libreoffice_path()
+    if not libreoffice_path:
+        print("❌ LibreOffice bulunamadı. Lütfen LibreOffice'i yükleyin.")
+        return False
     
     komut = [
         libreoffice_path,
@@ -15,7 +35,7 @@ def cevir(dosya_yolu):
     ]
 
     try:
-        subprocess.run(komut, check=True)
+        subprocess.run(komut, check=True, capture_output=True)
         print(f"✅ Metin dosyasından PDF'e dönüşüm başarılı.")
         return True
     except Exception as e:
