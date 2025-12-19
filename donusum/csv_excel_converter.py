@@ -4,6 +4,7 @@ CSV ve Excel dosyaları arasında çift yönlü dönüşüm yapar.
 """
 
 import os
+import csv
 import pandas as pd
 
 
@@ -16,9 +17,20 @@ def csv_to_excel(dosya_yolu):
         encodings = ['utf-8', 'latin-1', 'iso-8859-9', 'cp1254']
         df = None
         
+        # Otomatik delimiter tespiti
+        delimiter = ','
+        try:
+            with open(dosya_yolu, 'r', encoding='utf-8') as f:
+                sample = f.read(4096)
+                sniffer = csv.Sniffer()
+                dialect = sniffer.sniff(sample, delimiters=',;\t|')
+                delimiter = dialect.delimiter
+        except:
+            delimiter = ','
+        
         for encoding in encodings:
             try:
-                df = pd.read_csv(dosya_yolu, encoding=encoding)
+                df = pd.read_csv(dosya_yolu, encoding=encoding, sep=delimiter)
                 break
             except UnicodeDecodeError:
                 continue
