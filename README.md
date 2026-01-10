@@ -1,14 +1,17 @@
 # 🌿 FileMint — Çoklu Format Dosya Dönüştürücü
 
 <p align="center">
+  <a href="https://filemint.onrender.com/">
+    <img src="https://img.shields.io/badge/Demo-Canlı%20Uygulama-00C7B7?style=for-the-badge&logo=render&logoColor=white" alt="Live Demo" />
+  </a>
   <a href="https://www.python.org/">
-    <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+    <img src="https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
   </a>
   <a href="https://flask.palletsprojects.com/">
     <img src="https://img.shields.io/badge/Backend-Flask-000000?style=for-the-badge&logo=flask&logoColor=white" alt="Flask" />
   </a>
-  <a href="https://pymupdf.readthedocs.io/">
-    <img src="https://img.shields.io/badge/PDF-PyMuPDF-FF6B6B?style=for-the-badge&logo=adobe&logoColor=white" alt="PyMuPDF" />
+  <a href="https://www.docker.com/">
+    <img src="https://img.shields.io/badge/Docker-Containerized-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
   </a>
   <a href="#">
     <img src="https://img.shields.io/badge/Format-20+%20Dönüşüm-11AEAE?style=for-the-badge&logo=files&logoColor=white" alt="Formats" />
@@ -17,18 +20,29 @@
 
 > **FileMint**, PDF, Word, Excel, PowerPoint, resim ve daha birçok dosya formatı arasında hızlı ve güvenli dönüşüm yapmanızı sağlayan modern bir web uygulamasıdır. Sürükle-bırak arayüzü ile dosyalarınızı saniyeler içinde dönüştürün.
 
+## 🚀 Canlı Demo
+
+**FileMint** artık canlı ortamda! Herhangi bir kurulum yapmadan hemen deneyin:
+
+👉 **[https://filemint.onrender.com/](https://filemint.onrender.com/)**
+
+> ⚡ **Not:** Ücretsiz hosting kullanıldığı için ilk yüklemede 50 saniye kadar bekleme süresi olabilir.
+
 ## 📋 Proje Hakkında
 
 **FileMint**; dosya dönüştürme işlemlerini kolaylaştırmak için tasarlanmış, Python tabanlı güçlü bir araçtır. Kullanıcı dostu web arayüzü sayesinde karmaşık dönüşüm işlemlerini tek tıkla gerçekleştirebilirsiniz.
 
-- **Backend**: Flask + Python
+- **Backend**: Flask + Python 3.11
+- **Deployment**: Docker + Render.com
 - **PDF İşlemleri**: PyMuPDF, PyPDF2, pdf2docx
 - **Ofis Dosyaları**: python-docx, openpyxl, pandas
+- **Production Server**: Gunicorn
 - **Özellikler**: 
   - 20+ farklı dönüşüm türü
   - Sürükle-bırak dosya yükleme
   - Toplu PDF birleştirme
   - PDF sıkıştırma ve bölme
+  - Docker ile kolay deployment
 
 ## 🖼️ Ekran Görüntüleri
 
@@ -128,20 +142,35 @@ Sürükle-bırak özellikli dosya yükleme alanı ile dosyalarınızı kolayca d
 |-----------|----------|
 | **Pillow** | Resim işleme ve format dönüşümü |
 | **WeasyPrint** | HTML'den PDF oluşturma |
-| **Markdown** | Markdown işleme |
-| **Pygments** | Kod renklendirme |
+| **Markdown* ve Çalıştırma
 
-## 🚀 Kurulum
+### Seçenek 1: Docker ile Çalıştırma (Önerilir)
 
-Projeyi kendi bilgisayarınızda çalıştırmak için aşağıdaki adımları izleyin.
+Docker kullanarak projeyi hızlıca başlatabilirsiniz:
 
-### 1. Repoyu Klonlayın
+```bash
+# Repoyu klonlayın
+git clone https://github.com/BurakYucelPY/FileMint.git
+cd FileMint
+
+# Docker image'ını oluşturun ve çalıştırın
+docker build -t filemint .
+docker run -p 10000:10000 filemint
+```
+
+Tarayıcınızda `http://localhost:10000` adresine gidin.
+
+### Seçenek 2: Manuel Kurulum
+
+Projeyi kendi bilgisayarınızda manuel olarak çalıştırmak için:
+
+#### 1. Repoyu Klonlayın
 ```bash
 git clone https://github.com/BurakYucelPY/FileMint.git
 cd FileMint
 ```
 
-### 2. Sanal Ortam Oluşturun (Önerilir)
+#### 2. Sanal Ortam Oluşturun (Önerilir)
 ```bash
 # Windows
 python -m venv venv
@@ -152,15 +181,31 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-### 3. Bağımlılıkları Yükleyin
+#### 3. Bağımlılıkları Yükleyin
 ```bash
-pip install -r requirements.txt
-```
+pipDockerfile                   # Docker konteyner yapılandırması
+├─ requirements.txt             # Python bağımlılıkları
+├─ main.py                      # CLI giriş noktası (test amaçlı)
 
-### 4. Uygulamayı Başlatın
+#### 4. Uygulamayı Başlatın
 ```bash
 cd web
 python app.py
+```
+
+Tarayıcınızda `http://localhost:5000` adresine gidin.
+
+### Seçenek 3: Render.com'a Deploy
+
+Kendi Render.com hesabınızda çalıştırmak için:
+
+1. Repoyu fork edin
+2. [Render.com](https://render.com) hesabınızda **New Web Service** oluşturun
+3. GitHub reponuzu bağlayın
+4. Environment: **Docker** seçin
+5. **Deploy** butonuna tıklayın
+
+> 🎉 Render otomatik olarak Dockerfile'ı kullanarak uygulamayı deploy edecektir!
 ```
 
 Tarayıcınızda `http://localhost:5000` adresine gidin.
@@ -205,11 +250,30 @@ FileMint/
 ## 🐛 Sorun Giderme
 
 | Sorun | Çözüm |
-|-------|-------|
+|---Docker Build Hatası** | `libgl1-mesa-glx` paketini `libgl1` olarak değiştirin (Debian Trixie için). |
 | **WeasyPrint Kurulum Hatası** | Windows'ta GTK kurulumu gerekebilir. [WeasyPrint Docs](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html) adresinden detaylı bilgi alabilirsiniz. |
 | **PDF Dönüşümü Başarısız** | Dosyanın bozuk veya şifreli olmadığından emin olun. |
 | **Büyük Dosya Hatası** | Varsayılan limit 50 MB'tır. `app.py` dosyasındaki `MAX_CONTENT_LENGTH` değerini artırabilirsiniz. |
 | **Modül Bulunamadı** | Sanal ortamın aktif olduğundan ve tüm bağımlılıkların yüklendiğinden emin olun. |
+| **Port Kullanımda** | `app.py` dosyasında farklı bir port belirleyebilirsiniz veya `PORT` ortam değişkenini ayarlayın. |
+| **Render Spin Down** | Ücretsiz planda 15 dakika aktivite yoksa servis uyur, ilk istekte 50 saniye kadar açılır. |
+
+## 🌟 Özellikler
+
+- ✅ **20+ Dönüşüm Türü** - Tüm popüler dosya formatlarını destekler
+- ✅ **Sürükle-Bırak Arayüz** - Kolay ve hızlı dosya yükleme
+- ✅ **Güvenli İşleme** - Dosyalar sunucuda saklanmaz
+- ✅ **Docker Desteği** - Kolay deployment ve taşınabilirlik
+- ✅ **Production Ready** - Gunicorn ile optimize edilmiş
+- ✅ **Responsive Tasarım** - Mobil ve masaüstü uyumlu
+- ✅ **Açık Kaynak** - Özgürce kullanın ve geliştirin
+
+## 🔧 Teknik Detaylar
+
+- **Base Image:** `python:3.11-slim`
+- **Production Server:** Gunicorn (2 worker, 120s timeout)
+- **Dynamic Port Binding:** Render.com `PORT` ortam değişkeni desteği
+- **System Dependencies:** WeasyPrint ve pdf2docx için optimize edilmiş sistem paketleri. |
 | **Port Kullanımda** | `app.py` dosyasında farklı bir port belirleyebilirsiniz: `app.run(port=5001)` |
 
 ---
