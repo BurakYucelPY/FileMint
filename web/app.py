@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, send_file, jsonify
 import os
 import sys
 import tempfile
+import logging
 
 # Donusum klasörünü import edebilmek için path'e ekle
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
@@ -296,4 +297,6 @@ def dosya_yukle(tur):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    # Render.com ve diğer bulut platformları için PORT ortam değişkenini kullan
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=False, host='0.0.0.0', port=port)
