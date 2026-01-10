@@ -16,17 +16,8 @@ def cevir(dosya_yolu):
         dosya_adi = os.path.splitext(os.path.basename(dosya_yolu))[0]
         cikti_yolu = os.path.join(dizin, f"{dosya_adi}.pdf") if dizin else f"{dosya_adi}.pdf"
         
-        try:
-            from weasyprint import HTML
-            HTML(filename=dosya_yolu).write_pdf(cikti_yolu)
-        except ImportError:
-            try:
-                import pdfkit
-                pdfkit.from_file(dosya_yolu, cikti_yolu)
-            except ImportError:
-                return False
-            except OSError:
-                return False
+        from weasyprint import HTML
+        HTML(filename=dosya_yolu).write_pdf(cikti_yolu)
         
         return True
         
